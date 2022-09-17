@@ -7,6 +7,14 @@ import StudentsList from '../students-list/students-list';
 
 import './app.css';
 function App() {
+
+   const data = [
+      { name: "Александр", stipend: 100, increase: false, id: 1 },
+      { name: "Евгений", stipend: 100, increase: false, id: 2 },
+      { name: "Анна", stipend: 100, increase: true, id: 3 },
+      { name: "Cвета", stipend: 200, increase: false, id: 4 }
+   ];
+
    return (
       <div className="app">
          <AppInfo />
@@ -17,7 +25,7 @@ function App() {
          </div>
 
 
-         <StudentsList />
+         <StudentsList data={data} />
          <StudentsAddForm />
       </div>
 
