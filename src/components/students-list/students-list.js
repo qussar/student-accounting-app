@@ -2,13 +2,15 @@ import StudentsListItem from "../students-list-item/students-list-item";
 
 import './students-list.css';
 
-const StudentsList = ({ data }) => {
+const StudentsList = ({ data, onDelete }) => {
 
    const elements = data.map(item => {
       const { id, ...itemProps } = item;
 
       return (
-         <StudentsListItem key={id}  {...itemProps} />
+         <StudentsListItem key={id}
+            {...itemProps}
+            onDelete={() => onDelete(id)} />
          // <StudentsListItem name={item.name} stipend={item.stipend} />
       )
    })
