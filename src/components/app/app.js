@@ -14,12 +14,13 @@ class App extends Component {
       super(props);
       this.state = {
          data: [
-            { name: "Александр", stipend: 100, increase: false, id: 1 },
-            { name: "Евгений", stipend: 100, increase: false, id: 2 },
-            { name: "Анна", stipend: 100, increase: true, id: 3 },
-            { name: "Cвета", stipend: 200, increase: false, id: 4 }
+            { name: "Александр", stipend: 100, increase: false, rise: true, id: 1 },
+            { name: "Евгений", stipend: 100, increase: false, rise: false, id: 2 },
+            { name: "Анна", stipend: 100, increase: true, rise: false, id: 3 },
+            { name: "Cвета", stipend: 200, increase: false, rise: false, id: 4 }
          ]
       }
+      this.maxId = 4;
    }
 
    deleteItem = (id) => {
@@ -38,10 +39,41 @@ class App extends Component {
       })
    }
 
+   addItem = (name, stipend) => {
+      const newItem = {
+         name,
+         stipend,
+         increase: false,
+         rise: false,
+         id: this.maxId++
+      }
+      this.setState(({ data }) => {
+         const newArr = [...data, newItem];
+         return {
+            data: newArr
+         }
+      });
+   }
+
+   onToggleProp = (id, prop) => {
+      this.setState(({ data }) => ({
+         data: data.map(item => {
+            if (item.id === id) {
+               return { ...item, [prop]: !item[prop] }
+            }
+            return item;
+         })
+      }))
+   }
+
+
+
    render() {
+      const students = this.state.data.length;
+      const increased = this.state.data.filter(item => item.increase).length;
       return (
          <div className="app" >
-            <AppInfo />
+            <AppInfo students={students} increased={increased} />
 
             <div className="search-panel">
                <SearchPanel />
@@ -51,8 +83,9 @@ class App extends Component {
 
             <StudentsList
                data={this.state.data}
-               onDelete={this.deleteItem} />
-            <StudentsAddForm />
+               onDelete={this.deleteItem}
+               onToggleProp={this.onToggleProp} />
+            <StudentsAddForm onAdd={this.addItem} />
          </div>
 
       );

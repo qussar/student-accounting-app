@@ -1,62 +1,45 @@
-import { Component } from 'react';
+
 
 import './students-list-item.css';
 
 
-class StudentsListItem extends Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         increase: false,
-         rise: false
-      }
+const StudentsListItem = (props) => {
+
+
+
+   const { name, stipend, onDelete, onToggleProp, increase, rise } = props;
+
+
+   let classNames = "list-group-item d-flex justify-content-between";
+   if (increase) {
+      classNames += " increase";
+   }
+   if (rise) {
+      classNames += ' like';
    }
 
-   onIncreuse = () => {
-      this.setState(({ increase }) => ({
-         increase: !increase
-      }))
-   }
+   return (
+      <li className={classNames}>
+         <span className="list-group-item-label" onClick={onToggleProp} data-toggle='rise'>{name}</span>
+         <input type="text" className="list-group-item-input" defaultValue={stipend + "$"} />
+         <div className='d-flex justify-content-center align-items-center'>
+            <button type="button"
+               className="btn-cookie btn-sm "
+               onClick={onToggleProp}
+               data-toggle='increase'>
+               <i className="fas fa-cookie"></i>
+            </button>
 
-   onRise = () => {
-      this.setState(({ rise }) => ({
-         rise: !rise
-      }))
-   }
+            <button type="button"
+               className="btn-trash btn-sm "
+               onClick={onDelete}>
+               <i className="fas fa-trash"></i>
+            </button>
+            <i className="fas fa-star"></i>
+         </div>
+      </li>
+   )
 
-   render() {
-      const { name, stipend, onDelete } = this.props;
-      const { increase, rise } = this.state;
-
-      let classNames = "list-group-item d-flex justify-content-between";
-      if (increase) {
-         classNames += " increase";
-      }
-      if (rise) {
-         classNames += ' like';
-      }
-
-      return (
-         <li className={classNames}>
-            <span className="list-group-item-label" onClick={this.onRise}>{name}</span>
-            <input type="text" className="list-group-item-input" defaultValue={stipend + "$"} />
-            <div className='d-flex justify-content-center align-items-center'>
-               <button type="button"
-                  className="btn-cookie btn-sm "
-                  onClick={this.onIncreuse}>
-                  <i className="fas fa-cookie"></i>
-               </button>
-
-               <button type="button"
-                  className="btn-trash btn-sm "
-                  onClick={onDelete}>
-                  <i className="fas fa-trash"></i>
-               </button>
-               <i className="fas fa-star"></i>
-            </div>
-         </li>
-      )
-   }
 
 }
 

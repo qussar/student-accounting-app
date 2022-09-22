@@ -18,6 +18,16 @@ class StudentsAddForm extends Component {
         })
     }
 
+    onSubmit = (e) => {
+        e.preventDefault();
+        if (this.state.name.length < 3 || !this.state.stipend) return;
+        this.props.onAdd(this.state.name, this.state.stipend);
+        this.setState({
+            name: '',
+            stipend: ''
+        })
+    }
+
 
     render() {
         const { name, stipend } = this.state;
@@ -27,7 +37,8 @@ class StudentsAddForm extends Component {
             <div className="app-add-form" >
                 <h3>Добавьте нового студента</h3>
                 <form
-                    className="add-form d-flex">
+                    className="add-form d-flex"
+                    onSubmit={this.onSubmit}>
                     <input type="text"
                         className="form-control new-post-label"
                         placeholder="Как его зовут?"

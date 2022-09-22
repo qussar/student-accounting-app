@@ -2,7 +2,7 @@ import StudentsListItem from "../students-list-item/students-list-item";
 
 import './students-list.css';
 
-const StudentsList = ({ data, onDelete }) => {
+const StudentsList = ({ data, onDelete, onToggleProp }) => {
 
    const elements = data.map(item => {
       const { id, ...itemProps } = item;
@@ -10,8 +10,9 @@ const StudentsList = ({ data, onDelete }) => {
       return (
          <StudentsListItem key={id}
             {...itemProps}
-            onDelete={() => onDelete(id)} />
-         // <StudentsListItem name={item.name} stipend={item.stipend} />
+            onDelete={() => onDelete(id)}
+            onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-toggle'))} />
+
       )
    })
 
