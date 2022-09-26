@@ -14,25 +14,20 @@ class App extends Component {
       super(props);
       this.state = {
          data: [
-            { name: "Александр", stipend: 100, increase: false, rise: true, id: 1 },
+            { name: "Алексей", stipend: 100, increase: false, rise: true, id: 1 },
             { name: "Евгений", stipend: 100, increase: false, rise: false, id: 2 },
             { name: "Анна", stipend: 100, increase: true, rise: false, id: 3 },
             { name: "Cвета", stipend: 200, increase: false, rise: false, id: 4 }
-         ]
+         ],
+         term: '',
+         filter: 'all'
       }
       this.maxId = 4;
    }
 
    deleteItem = (id) => {
       this.setState(({ data }) => {
-         // const index = data.findIndex(elem => elem.id === id);
-         // const before = data.slice(0, index);
-         // const after = data.slice(index + 1);
 
-         // const newArr = [...before, ...after];
-         // return {
-         //    data: newArr
-         // }
          return {
             data: data.filter(item => item.id !== id)
          }
@@ -66,23 +61,53 @@ class App extends Component {
       }))
    }
 
+   searchEmp = (items, term) => {
+      if (term.length === 0) {
+         return items;
+      }
 
+      return items.filter(item => {
+         return item.name.indexOf(term) > -1
+      })
+   }
+
+   onUpdateSearch = (term) => {
+      this.setState({ term })
+   }
+
+   filterPost = (items, filter) => {
+      switch (filter) {
+         case 'rise':
+            return items.filter(item => item.rise);
+         case 'moreThen100':
+            return items.filter(item => item.stipend > 100);
+         default:
+            return items
+      }
+   }
+
+   onFilterSelect = (filter) => {
+      this.setState({ filter });
+
+   }
 
    render() {
+      const { data, term, filter } = this.state;
       const students = this.state.data.length;
       const increased = this.state.data.filter(item => item.increase).length;
+      const visibleData = this.filterPost(this.searchEmp(data, term), filter);
       return (
          <div className="app" >
             <AppInfo students={students} increased={increased} />
 
             <div className="search-panel">
-               <SearchPanel />
-               <AppFilter />
+               <SearchPanel onUpdateSearch={this.onUpdateSearch} />
+               <AppFilter filter={filter} onFilterSelect={this.onFilterSelect} />
             </div>
 
 
             <StudentsList
-               data={this.state.data}
+               data={visibleData}
                onDelete={this.deleteItem}
                onToggleProp={this.onToggleProp} />
             <StudentsAddForm onAdd={this.addItem} />
